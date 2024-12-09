@@ -1,0 +1,49 @@
+.leftbar {
+    width: 220px;
+    height: 100vh;
+    background-color: #343a40;  /* Sidebar background color */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+  }
+  
+  .leftbar-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .leftbar-header h2 {
+    color: #fff;
+  }
+  
+  .leftbar-menu {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .leftbar-menu li {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .leftbar-menu li a {
+    color: #fff;  /* Default text color */
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 4px;
+    background-color: #343a40; /* Default background color (same as sidebar) */
+  }
+  
+  .leftbar-menu li a:hover {
+    background-color: #007bff; /* Blue background on hover */
+    color: white;
+  }
+  
+  .leftbar-menu li a:active {
+    background-color: #0056b3; /* Darker blue background when active */
+  }
+  

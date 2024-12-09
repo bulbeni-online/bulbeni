@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Correct imports for v6+
+import LeftBar from './components/LeftBar'; // Import the LeftBar
+import UserList from './components/UserList'; // The page for user management
+import RoleManagement from './components/RoleManagement'; // The new Role Management page
+import './App.css'; // Global styles
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="app">
+        <LeftBar /> {/* Render the LeftBar on the left side */}
+        
+        <div className="main-content">
+          <h1>Welcome to Bulbeni</h1>
+          
+          <Routes>
+            <Route path="/users" element={<UserList />} />
+            <Route path="/roles" element={<RoleManagement />} /> {/* Route for Role Management */}
+            {/* Add more routes as you add more models */}
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
