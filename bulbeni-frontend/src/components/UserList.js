@@ -65,14 +65,7 @@ const UserList = () => {
           <li key={user.id}>
             <p>{user.username} ({user.email})</p>
             <label>
-              Role:
-              <select
-                value={user.role || 'User'}
-                onChange={(e) => handleRoleChange(user.id, e.target.value)}
-              >
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-              </select>
+              Role:{user.role || 'User'}
             </label>
             <button onClick={() => setEditingUserId(user.id)}>Edit</button>
             <button onClick={() => handleDelete(user.id)}>Delete</button>

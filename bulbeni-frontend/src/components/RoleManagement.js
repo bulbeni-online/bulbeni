@@ -3,32 +3,19 @@ import axios from 'axios'; // Assuming axios is used for API calls
 import './RoleManagement.css';
 
 const RoleManagement = () => {
-  const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   
   useEffect(() => {
     // Fetch users from the backend (json-server or other API)
-    axios.get('http://localhost:5000/users')
+    axios.get('http://localhost:5000/roles')
       .then((response) => {
-        setUsers(response.data);
+        setRoles(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching roles:', error);
       });
   }, []);
 
-  const handleRoleChange = (userId, newRole) => {
-    // Update the user's role in the backend
-    axios.put(`http://localhost:5000/users/${userId}`, { role: newRole })
-      .then((response) => {
-        // Update the state with the new role
-        setUsers(users.map(user => 
-          user.id === userId ? { ...user, role: newRole } : user
-        ));
-      })
-      .catch((error) => {
-        console.error('Error updating role:', error);
-      });
-  };
 
   return (
     <div>
@@ -36,27 +23,15 @@ const RoleManagement = () => {
       <table>
         <thead>
           <tr>
-            <th>Username</th>
-            <th>Email</th>
             <th>Role</th>
-            <th>Change Role</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.role || 'User'}</td>
-              <td>
-                <select
-                  value={user.role || 'User'}
-                  onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                >
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
-                </select>
-              </td>
+          {roles.map((role) => (
+            <tr key={role.name}>
+              <td>{role.name}</td>
+              <td>{role.description}</td>
             </tr>
           ))}
         </tbody>

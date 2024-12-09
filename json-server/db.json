@@ -4,19 +4,32 @@
       "username": "john_doe",
       "email": "john@gmail.com",
       "password": "password123",
-      "id": "1"
+      "id": "1",
+      "role": "User"
     },
     {
       "id": "9dd5",
       "username": "jane_doe",
       "email": "jane@gmail.com",
-      "password": "12345"
+      "password": "12345",
+      "role": "User"
     },
     {
-      "id": "3352",
       "username": "kemal",
       "email": "kemal@gmail.com",
-      "password": "123"
+      "password": "12345",
+      "role": "Admin",
+      "id": "2a49"
+    }
+  ],
+  "roles": [
+    {
+      "name": "Admin",
+      "description": "Admin Role with all privileges"
+    },
+    {
+      "name": "User",
+      "description": "User Role"
     }
   ]
 }
