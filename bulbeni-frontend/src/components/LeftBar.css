@@ -1,49 +1,50 @@
 .leftbar {
-    width: 220px;
-    height: 100vh;
-    background-color: #343a40;  /* Sidebar background color */
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 20px;
-  }
-  
-  .leftbar-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .leftbar-header h2 {
-    color: #fff;
-  }
-  
-  .leftbar-menu {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  .leftbar-menu li {
-    margin: 20px 0;
-    text-align: center;
-  }
-  
-  .leftbar-menu li a {
-    color: #fff;  /* Default text color */
-    text-decoration: none;
-    font-size: 18px;
-    padding: 10px;
-    display: block;
-    border-radius: 4px;
-    background-color: #343a40; /* Default background color (same as sidebar) */
-  }
-  
-  .leftbar-menu li a:hover {
-    background-color: #007bff; /* Blue background on hover */
-    color: white;
-  }
-  
-  .leftbar-menu li a:active {
-    background-color: #0056b3; /* Darker blue background when active */
-  }
-  
+  width: 220px;
+  height: 100vh;
+  background-color: #2c3e50;  /* Darker background color */
+  color: #ecf0f1;  /* Lighter text color */
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+}
+
+.leftbar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.leftbar-header h2 {
+  color: #ecf0f1;  /* Light text color */
+  font-weight: bold;  /* Bold header text */
+}
+
+.leftbar-menu {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.leftbar-menu li {
+  margin: 15px 0;  /* Reduced margin for a more compact look */
+  text-align: center;
+}
+
+.leftbar-menu li a {
+  color: #ecf0f1;  /* Light text color */
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;  /* Smooth transition for hover effect */
+}
+
+.leftbar-menu li a:hover {
+  background-color: #2980b9;  /* Elegant blue background on hover */
+  color: #fff;
+}
+
+.leftbar-menu li a:active {
+  background-color: #1a5276;  /* Darker blue background when active */
+}

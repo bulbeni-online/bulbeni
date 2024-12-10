@@ -8,28 +8,30 @@
       "role": "User"
     },
     {
-      "id": "9dd5",
-      "username": "jane_doe",
-      "email": "jane@gmail.com",
-      "password": "12345",
-      "role": "User"
-    },
-    {
       "username": "kemal",
       "email": "kemal@gmail.com",
-      "password": "12345",
+      "password": "kemal",
       "role": "Admin",
       "id": "2a49"
+    },
+    {
+      "username": "nilbuket",
+      "email": "nil@gmail.com",
+      "password": "1234",
+      "role": "Admin",
+      "id": "dbe1"
     }
   ],
   "roles": [
     {
       "name": "Admin",
-      "description": "Admin Role with all privileges"
+      "description": "Admin Role with all privileges",
+      "id": "74fb"
     },
     {
       "name": "User",
-      "description": "User Role"
+      "description": "User Role",
+      "id": "1b85"
     }
   ]
 }
