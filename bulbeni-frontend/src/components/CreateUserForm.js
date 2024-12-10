@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CreateUserForm.css';
+import config from '../config.js';
 
 const CreateUserForm = ({ onUserCreated }) => {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ const CreateUserForm = ({ onUserCreated }) => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/roles');
+        const response = await axios.get(`${config.API_URL}/roles`);
         setRoles(response.data); // Set roles from the response
         setRole('');
       } catch (error) {
@@ -29,7 +30,7 @@ const CreateUserForm = ({ onUserCreated }) => {
     const newUser = { username, email, password, role };
 
     try {
-      const response = await axios.post('http://localhost:5000/users', newUser);
+      const response = await axios.post(`${config.API_URL}/users`, newUser);
       onUserCreated(response.data);
       setUsername('');
       setEmail('');

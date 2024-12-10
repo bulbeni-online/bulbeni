@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Assuming axios is used for API calls
 import './RoleManagement.css';
+import config from '../config.js';
 
 const RoleManagement = () => {
   const [roles, setRoles] = useState([]);
   
   useEffect(() => {
     // Fetch users from the backend (json-server or other API)
-    axios.get('http://localhost:5000/roles')
+    axios.get(`${config.API_URL}/roles`)
       .then((response) => {
         setRoles(response.data);
       })

@@ -3,13 +3,14 @@ import axios from 'axios';
 import CreateUserForm from './CreateUserForm';
 import UpdateUserForm from './UpdateUserForm';
 import './UserList.css';
+import config from '../config.js';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/users').then((response) => {
+    axios.get(`${config.API_URL}/users`).then((response) => {
       setUsers(response.data);
     });
   }, [users]);
@@ -29,7 +30,7 @@ const UserList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/users/${id}`);
+      await axios.delete(`${config.API_URL}/users/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -37,7 +38,7 @@ const UserList = () => {
   };
 
   const handleRoleChange = (userId, newRole) => {
-    axios.put(`http://localhost:5000/users/${userId}`, { role: newRole })
+    axios.put(`${config.API_URL}/users/${userId}`, { role: newRole })
       .then((response) => {
         setUsers((prevUsers) =>
           prevUsers.map((user) =>

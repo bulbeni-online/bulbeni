@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UpdateUserForm.css';
+import config from '../config.js';
 
 const UpdateUserForm = ({ userId, onUserUpdated }) => {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ const UpdateUserForm = ({ userId, onUserUpdated }) => {
   useEffect(() => {
     const fetchRolesAndUserData = async () => {
       try {
-        const rolesResponse = await axios.get('http://localhost:5000/roles');
+        const rolesResponse = await axios.get(`${config.API_URL}/roles`);
         setRoles(rolesResponse.data);
         
         if (rolesResponse.data.length > 0) {
@@ -21,7 +22,7 @@ const UpdateUserForm = ({ userId, onUserUpdated }) => {
         }
 
         if (userId) {
-          const userResponse = await axios.get(`http://localhost:5000/users/${userId}`);
+          const userResponse = await axios.get(`${config.API_URL}/users/${userId}`);
           const user = userResponse.data;
           setUsername(user.username);
           setEmail(user.email);
@@ -41,7 +42,7 @@ const UpdateUserForm = ({ userId, onUserUpdated }) => {
     const updatedUser = { username, email, password, role };
 
     try {
-      const response = await axios.put(`http://localhost:5000/users/${userId}`, updatedUser);
+      const response = await axios.put(`${config.API_URL}/users/${userId}`, updatedUser);
       onUserUpdated(response.data);
     } catch (error) {
       console.error('Error updating user:', error);
