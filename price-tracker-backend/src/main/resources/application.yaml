@@ -1,0 +1,12 @@
+
+aws:
+  region: us-east-1  # Change to your preferred AWS region
+  credentials:
+    access-key: dummyAccessKey
+    secret-key: dummySecretKey
+
+dynamodb:
+  endpoint: http://localhost:8000  # Local DynamoDB endpoint
+  table:
+    name: ProductEntry  # Table name
+

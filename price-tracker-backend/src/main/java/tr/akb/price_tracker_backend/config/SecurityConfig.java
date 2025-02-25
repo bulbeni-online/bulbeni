@@ -58,6 +58,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/login").permitAll()  // Allow public access to login endpoint
+                        .requestMatchers("/api/product-entries/**").permitAll()
                         .requestMatchers("/api/**").authenticated() // Keep other API endpoints protected
                         .anyRequest().permitAll()
                 )
