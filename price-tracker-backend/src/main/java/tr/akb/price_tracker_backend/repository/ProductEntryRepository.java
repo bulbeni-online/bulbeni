@@ -14,4 +14,6 @@ public interface ProductEntryRepository {
     Optional<ProductEntry> findByUserIdAndId(String userId, Long id);
 
     Optional<ProductEntry> deleteByUserIdAndId(String userId, Long id);
+
+    List<ProductEntry> findAll();
 }

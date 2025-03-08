@@ -4,63 +4,74 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/api/*") // You can modify the URL pattern to filter only specific API endpoints
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+    private static final AntPathRequestMatcher OPTIONS_REQUEST_MATCHER = new AntPathRequestMatcher("/**", "OPTIONS");
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super(authenticationManager);
+    private final JWTUtil jwtUtil;
+
+    public JWTAuthenticationFilter(JWTUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
     }
 
-    // This method is invoked when we receive a request to authenticate the user
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String token = request.getHeader("Authorization"); // Get the token from the Authorization header
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
 
-        try {
-
-            if (token != null && token.startsWith("Bearer ")) {
-                token = token.substring(7); // Remove "Bearer " prefix
-                try {
-                    // Validate the token and extract claims
-                    Claims claims = JWTUtil.parseToken(token);
-                    String username = claims.getSubject(); // Extract the username from the token
-
-                    // Set authentication in Spring Security
-                    UserDetails userDetails = User.withUsername(username).password("") // Empty password as it’s validated by JWT
-                            .authorities("USER").build(); // You can add roles/authorities as needed
-
-                    return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
-                } catch (JwtException e) {
-                    // Handle invalid token error (you can log it and return a 401 Unauthorized status)
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
-                }
-            } else {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization header is missing or incorrect");
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        // Skip OPTIONS requests
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+            logger.debug("Skipping OPTIONS request: {}", request.getRequestURI());
+            chain.doFilter(request, response);
+            return;
         }
-        return null; // Return null to prevent the chain from proceeding if the token is invalid
+
+        String token = request.getHeader("Authorization");
+        logger.debug("Authorization Header: {}", token);
+
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            logger.debug("Token: {}", token);
+            try {
+                Claims claims = jwtUtil.parseToken(token);
+                String username = claims.getSubject();
+                logger.debug("Username from token: {}", username);
+
+                UserDetails userDetails = User.withUsername(username)
+                        .password("")
+                        .authorities("USER")
+                        .build();
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // ✅ Store authentication in SecurityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (JwtException e) {
+                logger.error("JWT Exception: {}", e.getMessage());
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+            }
+        }
+
+        chain.doFilter(request, response);
+
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
-    }
 }

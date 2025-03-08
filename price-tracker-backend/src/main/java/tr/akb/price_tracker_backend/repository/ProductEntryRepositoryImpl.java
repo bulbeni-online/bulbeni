@@ -51,4 +51,12 @@ public class ProductEntryRepositoryImpl implements ProductEntryRepository {
         Key key = Key.builder().partitionValue(userId).sortValue(id).build();
         return Optional.ofNullable(productEntryTable.deleteItem(key));
     }
+
+    @Override
+    public List<ProductEntry> findAll() {
+        return productEntryTable.scan()
+                .items()
+                .stream()
+                .collect(Collectors.toList());
+    }
 }
