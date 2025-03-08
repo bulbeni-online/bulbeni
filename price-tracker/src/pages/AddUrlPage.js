@@ -11,7 +11,9 @@ import api from "../api";
 const AddUrlPage = () => {
   const username = localStorage.getItem("user") || "Misafir";
 
+  const [name, setName] = useState("");
   const [url, setUrl] = useState("");
+  const [productType, setProductType] = useState("");
   const [message, setMessage] = useState("");
   const [productEntries, setProductEntries] = useState([]);
 
@@ -23,6 +25,9 @@ const AddUrlPage = () => {
   const fetchProductEntries = async () => {
 
     try {
+      // debug
+      console.log(localStorage.getItem("token"));
+
       const response = await api.get(`/product-entries/${username}`);
       if (response.status === 200) {
         setProductEntries(response.data);
@@ -42,12 +47,16 @@ const AddUrlPage = () => {
     try {
       const response = await api.post("/product-entries", {
         "userId": username,
-        url
+        name,
+        url,
+        productType
       });
 
       if (response.status === 201) {
         setMessage("URL başarıyla eklendi!");
+        setName("");
         setUrl(""); // Clear the input field
+        setProductType("");
         fetchProductEntries(); // Refresh the list
       } else {
         setMessage("URL eklenirken hata oluştu.");
@@ -82,12 +91,27 @@ const AddUrlPage = () => {
       header: "ID",
     },
     {
+      accessorKey: "name",
+      header: "NAME",
+    },
+    {
       accessorKey: "url",
       header: "URL",
+      cell: ({ row }) => (
+        <div style={styles.urlCell}>
+          <a href={row.original.url} target="_blank" rel="noopener noreferrer">
+            {row.original.url}
+          </a>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "productType",
+      header: "PRODUCT TYPE",
     },
     {
       accessorKey: "actions",
-      header: "Sil",
+      header: "",
       cell: ({ row }) => (
         <button
           onClick={() => handleDelete(row.original.id)}
@@ -118,12 +142,29 @@ const AddUrlPage = () => {
       <form onSubmit={handleAddUrl} style={styles.form}>
         <input
           type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          style={styles.input}
+        />
+        <input
+          type="text"
           placeholder="URL"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           required
           style={styles.input}
         />
+        <select
+          name="productType"
+          value={productType}
+          onChange={ (e) => setProductType(e.target.value)}
+          style={styles.select}
+        >
+          <option value="">None</option>
+          <option value="URL">URL</option>
+        </select>
         <button type="submit" style={styles.button}>
           Ekle
         </button>
@@ -136,7 +177,7 @@ const AddUrlPage = () => {
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id}>
+                <th key={header.id} style={styles.th}>
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
@@ -147,7 +188,7 @@ const AddUrlPage = () => {
           {table.getRowModel().rows.map(row => (
             <tr key={row.id}>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td key={cell.id} style={styles.td}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -173,7 +214,7 @@ const AddUrlPage = () => {
 
 const styles = {
   container: {
-    width: "600px",
+    width: "95%",
     margin: "50px auto",
     textAlign: "center",
     padding: "20px",
@@ -190,8 +231,15 @@ const styles = {
     margin: "10px 0",
     fontSize: "16px",
   },
+  select: {
+    width: "80%",
+    padding: "10px",
+    margin: "10px 0",
+    fontSize: "16px",
+  },
   button: {
     padding: "10px 20px",
+    marginTop: "20px",
     background: "#007bff",
     color: "white",
     border: "none",
@@ -208,6 +256,23 @@ const styles = {
   table: {
     width: "100%",
     borderCollapse: "collapse",
+  },
+  th: {
+    border: "1px solid black", // Add border to headers
+    padding: "8px",
+    backgroundColor: "#f2f2f2",
+    textAlign: "left",
+  },
+  td: {
+    border: "1px solid black", // Add border to cells
+    padding: "8px",
+    textAlign: "left",
+  },
+  urlCell: {
+    maxWidth: "300px", // Set max width to prevent stretching
+    //wordWrap: "break-word", // Allow word wrapping
+    whiteSpace: "normal", // Enable multi-line text
+    overflow: "hidden",
   },
   pagination: {
     marginTop: "10px"

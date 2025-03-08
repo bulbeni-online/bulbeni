@@ -25,6 +25,9 @@ const Layout = () => {
             <li>
               <Link to="/add-url" style={styles.navItem}>Add URL</Link>
             </li>
+            <li>
+              <Link to="/price-monitor" style={styles.navItem}>Monitor Prices</Link>
+            </li>
             {/* Add more links as needed */}
           </ul>
         </nav>

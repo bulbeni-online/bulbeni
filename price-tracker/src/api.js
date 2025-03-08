@@ -1,23 +1,22 @@
 // src/api.js
 import axios from "axios";
 
-// Axios instance oluşturma ve global yapılandırma
 const api = axios.create({
-  baseURL: "http://localhost:8080/api", // Backend API URL'niz
+  baseURL: "http://localhost:8080/api",
+  withCredentials: true
 });
 
-// Token'ı header'da göndermek için request interceptor ekleyelim
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");  // Token'ı localStorage'dan al
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;  // Authorization header ekle
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.warn("No token found in localStorage");
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);  // Hata durumunda reddet
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;

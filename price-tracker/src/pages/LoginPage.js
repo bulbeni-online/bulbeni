@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";  // Axios yapılandırmasını içe aktar
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,13 +14,18 @@ const LoginPage = () => {
 
     try {
       const response = await api.post("/auth/login", {
-        "username":email,
+        username,
         password,
       });
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", email);
-      navigate("/dashboard");
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token); // Ensure backend returns { token: "..." }
+        localStorage.setItem("user", username);
+        navigate("/dashboard");
+      } else {
+        setError("Giriş başarısız.");
+      }
+
     } catch (err) {
       setError("Giriş başarısız! Lütfen bilgilerinizi kontrol edin.");
       alert("Hata: Giriş başarısız! Lütfen bilgilerinizi kontrol edin."); // Hata mesajını göster
@@ -36,8 +41,8 @@ const LoginPage = () => {
         <input
           type="text"
           placeholder="Kullanıcı Adı"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
           style={styles.input}
         />
