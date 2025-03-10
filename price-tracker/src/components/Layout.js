@@ -16,17 +16,17 @@ const Layout = () => {
     <div style={styles.container}>
       {/* Sidebar */}
       <div style={styles.sidebar}>
-        <h3 style={styles.logo}>MyApp</h3>
+        <h3 style={styles.logo}>Bulbeni</h3>
         <nav>
           <ul style={styles.navList}>
             <li>
-              <Link to="/dashboard" style={styles.navItem}>Dashboard</Link>
+              <Link to="/dashboard" style={styles.navItem}>Anasayfa</Link>
             </li>
             <li>
-              <Link to="/add-url" style={styles.navItem}>Add URL</Link>
+              <Link to="/product" style={styles.navItem}>Ürün</Link>
             </li>
             <li>
-              <Link to="/price-monitor" style={styles.navItem}>Monitor Prices</Link>
+              <Link to="/price-monitor" style={styles.navItem}>Fiyat Takip</Link>
             </li>
             {/* Add more links as needed */}
           </ul>
@@ -48,7 +48,7 @@ const Layout = () => {
 
         {/* Bottom Bar (Info Section) */}
         <div style={styles.bottomBar}>
-          <p>Some informational text goes here...</p>
+          <p> @copyright akb </p>
         </div>
       </div>
     </div>

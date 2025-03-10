@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import AddUrlPage from "./pages/AddUrlPage";
+import ProductPage from "./pages/ProductPage";
 import PriceMonitoringPage from "./pages/PriceMonitoringPage";
 import PrivateRoute from "./components/PrivateRoute"; // Import PrivateRoute
 import LogoutPage from "./pages/LogoutPage";
@@ -14,13 +14,14 @@ function App() {
     <Router>
       <Routes>
         {/* Public route */}
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
         <Route element={<Layout />}>
 
           {/* Private routes */}
+          <Route path="/" element={<PrivateRoute element={DashboardPage} />} />
           <Route path="/dashboard" element={<PrivateRoute element={DashboardPage} />} />
-          <Route path="/add-url" element={<PrivateRoute element={AddUrlPage} />} />
+          <Route path="/product" element={<PrivateRoute element={ProductPage} />} />
           <Route path="/price-monitor" element={<PrivateRoute element={PriceMonitoringPage} />} />
           <Route path="/logout" element={<PrivateRoute element={LogoutPage} />} />
         </Route>

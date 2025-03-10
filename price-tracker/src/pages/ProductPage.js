@@ -1,4 +1,4 @@
-// src/pages/AddUrlPage.js
+// src/pages/ProductPage.js
 import React, { useState, useEffect } from "react";
 import {
   useReactTable,
@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import api from "../api";
 
-const AddUrlPage = () => {
+const ProductPage = () => {
   const username = localStorage.getItem("user") || "Misafir";
 
   const [name, setName] = useState("");
@@ -23,7 +23,6 @@ const AddUrlPage = () => {
   }, []);
 
   const fetchProductEntries = async () => {
-
     try {
       // debug
       console.log(localStorage.getItem("token"));
@@ -40,26 +39,26 @@ const AddUrlPage = () => {
     }
   };
 
-  const handleAddUrl = async (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
     setMessage("");
 
     try {
       const response = await api.post("/product-entries", {
-        "userId": username,
+        userId: username,
         name,
         url,
-        productType
+        productType,
       });
 
       if (response.status === 201) {
-        setMessage("URL başarıyla eklendi!");
+        setMessage("Ürün başarıyla eklendi!");
         setName("");
         setUrl(""); // Clear the input field
         setProductType("");
         fetchProductEntries(); // Refresh the list
       } else {
-        setMessage("URL eklenirken hata oluştu.");
+        setMessage("Ürün eklenirken hata oluştu.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -68,7 +67,14 @@ const AddUrlPage = () => {
   };
 
   const handleDelete = async (id) => {
-    
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      "Bu ürünü silmek istediğinizden emin misiniz?"
+    );
+    if (!confirmed) {
+      return; // Exit if user cancels
+    }
+
     try {
       const response = await api.delete(`/product-entries/${username}/${id}`);
 
@@ -88,11 +94,11 @@ const AddUrlPage = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: "ID",
+      header: "Id",
     },
     {
       accessorKey: "name",
-      header: "NAME",
+      header: "Ad",
     },
     {
       accessorKey: "url",
@@ -107,7 +113,7 @@ const AddUrlPage = () => {
     },
     {
       accessorKey: "productType",
-      header: "PRODUCT TYPE",
+      header: "Ürün Tipi",
     },
     {
       accessorKey: "actions",
@@ -138,33 +144,75 @@ const AddUrlPage = () => {
 
   return (
     <div style={styles.container}>
-      <h2>URL Ekle</h2>
-      <form onSubmit={handleAddUrl} style={styles.form}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input
-          type="text"
-          placeholder="URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <select
-          name="productType"
-          value={productType}
-          onChange={ (e) => setProductType(e.target.value)}
-          style={styles.select}
-        >
-          <option value="">None</option>
-          <option value="URL">URL</option>
-        </select>
+      <h2>Ürün</h2>
+      <form onSubmit={handleAdd} style={styles.form}>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Ürün Adı:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={styles.input}
+            placeholder="Ürün adını girin"
+            required
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Ürün Tipi:</label>
+          <div style={styles.radioOption}>
+            <input
+              type="radio"
+              name="productType"
+              value=""
+              checked={productType === ""}
+              onChange={(e) => setProductType(e.target.value)}
+              style={styles.radioInput}
+            />
+            <label style={styles.radioLabel}>Hiç</label>
+          </div>
+          <div style={styles.radioGroup}>
+            <div style={styles.radioOption}>
+              <input
+                type="radio"
+                name="productType"
+                value="URL"
+                checked={productType === "URL"}
+                onChange={(e) => setProductType(e.target.value)}
+                style={styles.radioInput}
+              />
+              <label style={styles.radioLabel}>URL</label>
+            </div>
+
+            {/* Add more options here if needed, e.g., "API" or "Manual" */}
+            {/* Example:
+            <div style={styles.radioOption}>
+              <input
+                type="radio"
+                name="productType"
+                value="API"
+                checked={productType === "API"}
+                onChange={(e) => setProductType(e.target.value)}
+                style={styles.radioInput}
+              />
+              <label style={styles.radioLabel}>API</label>
+            </div>
+            */}
+          </div>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>URL:</label>
+          <input
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            style={styles.input}
+            placeholder="https://example.com"
+            required={productType === "URL"}
+          />
+        </div>
+
         <button type="submit" style={styles.button}>
           Ekle
         </button>
@@ -174,20 +222,23 @@ const AddUrlPage = () => {
       <h3>Kayıtlı URL'ler</h3>
       <table style={styles.table}>
         <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
+              {headerGroup.headers.map((header) => (
                 <th key={header.id} style={styles.th}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => (
+          {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
+              {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} style={styles.td}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
@@ -198,13 +249,22 @@ const AddUrlPage = () => {
       </table>
 
       <div style={styles.pagination}>
-        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
           {"<"}
         </button>
         <span>
-          Sayfa <strong>{table.getState().pagination.pageIndex + 1} / {table.getPageCount()}</strong>
+          Sayfa{" "}
+          <strong>
+            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+          </strong>
         </span>
-        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
           {">"}
         </button>
       </div>
@@ -251,7 +311,7 @@ const styles = {
     border: "none",
     color: "red",
     cursor: "pointer",
-    fontSize: "20px"
+    fontSize: "20px",
   },
   table: {
     width: "100%",
@@ -275,12 +335,12 @@ const styles = {
     overflow: "hidden",
   },
   pagination: {
-    marginTop: "10px"
+    marginTop: "10px",
   },
   message: {
     marginTop: "15px",
     color: "#28a745",
-  }
+  },
 };
 
-export default AddUrlPage;
+export default ProductPage;
