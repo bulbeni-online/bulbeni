@@ -15,6 +15,8 @@ spring:
 
 jwt:
   secret: your-very-secure-secret-key-1234567890  # Replace with a long, random string (at least 32 characters)
+  expiration: 3600000 # 1 hour in milliseconds (3600 seconds * 1000)
+  #expiration : 86400000 # 24 hours
 
 logging:
   level:
