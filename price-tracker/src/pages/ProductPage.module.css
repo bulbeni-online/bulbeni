@@ -1,0 +1,91 @@
+.container {
+    width: 95%;
+    text-align: center;
+    border: none;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Match Layout */
+    border-radius: 12px;
+    padding:20px;
+  }
+  .header {
+    color: var(--danger); /* #e74c3c */
+    margin: 30px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 10%;
+  }
+  
+  .deleteButton {
+    background: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .tableContainer {
+    margin-top: 50px;
+    padding: 10px;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .th {
+    border: 1px solid black;
+    padding: 8px;
+    background-color: #f4f6f9; /* Lighter gray */
+    text-align: left;
+  }
+  
+  .td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .urlCell {
+    max-width: 300px;
+    white-space: normal;
+    overflow: hidden;
+  }
+  
+  .pagination {
+    margin-top: 10px;
+  }
+  
+  .message {
+    margin: 30px;
+    color: var(--danger);
+  }

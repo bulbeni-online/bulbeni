@@ -1,0 +1,69 @@
+.container {
+    width: 350px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input {
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: var(--text);
+  }
+  
+  .input:disabled {
+    background: #f4f6f9;
+    cursor: not-allowed;
+  }
+  
+  .button {
+    padding: 12px;
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: PrivateRoute16px;
+    transition: background 0.3s ease;
+  }
+  
+  .button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .button:hover:not(:disabled) {
+    background: #16a085; /* Darker shade of --secondary */
+  }
+  
+  .error {
+    color: var(--danger);
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  .signupLink {
+    margin-top: 15px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  
+  .signupLink a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  .signupLink a:hover {
+    text-decoration: underline;
+  }

@@ -1,0 +1,33 @@
+:root {
+    --primary: #2c3e50;
+    --secondary: #1abc9c;
+    --danger: #e74c3c;
+    --background: #f4f6f9;
+    --text: #34495e;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--background);
+    color: var(--text);
+  }
+  
+  .button {
+    padding: 10px 20px;
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .button:hover {
+    background: darken(var(--secondary), 10%);
+  }

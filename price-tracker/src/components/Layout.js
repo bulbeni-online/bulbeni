@@ -1,126 +1,67 @@
-// src/components/Layout.js
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { FaSignOutAlt } from "react-icons/fa"; // For the logout icon
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { FaSignOutAlt, FaUser } from "react-icons/fa";
+import "./Layout.css";
 
 const Layout = () => {
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Clear the token from local storage
-    navigate("/"); // Redirect to login page
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   return (
-    <div style={styles.container}>
+    <div className="layout-container">
       {/* Sidebar */}
-      <div style={styles.sidebar}>
-        <h3 style={styles.logo}>Bulbeni</h3>
+      <aside className="sidebar" aria-label="Main Navigation">
+        <h3 className="logo">Bulbeni</h3>
         <nav>
-          <ul style={styles.navList}>
+          <ul className="nav-list">
             <li>
-              <Link to="/dashboard" style={styles.navItem}>Anasayfa</Link>
+              <Link to="/dashboard" className="nav-item">Anasayfa</Link>
             </li>
             <li>
-              <Link to="/product" style={styles.navItem}>Ürün</Link>
+              <Link to="/product" className="nav-item">Ürün</Link>
             </li>
             <li>
-              <Link to="/price-monitor" style={styles.navItem}>Fiyat Takip</Link>
+              <Link to="/price-monitor" className="nav-item">Fiyat Takip</Link>
             </li>
-            {/* Add more links as needed */}
           </ul>
         </nav>
-      </div>
+      </aside>
 
       {/* Main Content Area */}
-      <div style={styles.content}>
-        <div style={styles.topBar}>
-          <span style={styles.logoutIcon} onClick={handleLogout}>
-            <FaSignOutAlt /> Logout
+      <div className="content">
+        <header className="top-bar">
+          <Link to="/profile" className="profile-link">
+            <FaUser className="nav-icon" /> Profil
+          </Link>
+          <span
+            className="logout-icon"
+            onClick={handleLogout}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && handleLogout()}
+            aria-label="Çıkış Yap"
+          >
+            <FaSignOutAlt /> Çıkış Yap
           </span>
-        </div>
+        </header>
 
         {/* Page Content */}
-        <div style={styles.pageContent}>
-          <Outlet /> {/* This will render the child pages */}
-        </div>
+        <main className="page-content">
+          <Outlet />
+        </main>
 
-        {/* Bottom Bar (Info Section) */}
-        <div style={styles.bottomBar}>
-          <p> @copyright akb </p>
-        </div>
+        {/* Footer */}
+        <footer className="bottom-bar">
+          <p>&copy; 2025 akb</p>
+        </footer>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: "flex",
-  },
-  sidebar: {
-    width: "250px",
-    background: "#2c3e50",
-    color: "white",
-    height: "100vh",
-    paddingTop: "20px",
-    position: "fixed",
-  },
-  logo: {
-    color: "#ecf0f1",
-    textAlign: "center",
-    marginBottom: "30px",
-  },
-  navList: {
-    listStyleType: "none",
-    padding: "0",
-  },
-  navItem: {
-    color: "#ecf0f1",
-    textDecoration: "none",
-    display: "block",
-    padding: "10px",
-    margin: "10px 0",
-    borderRadius: "5px",
-    transition: "background-color 0.3s",
-  },
-  navItemHover: {
-    backgroundColor: "#34495e",
-  },
-  content: {
-    marginLeft: "250px",
-    width: "calc(100% - 250px)",
-    padding: "20px",
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh",
-  },
-  topBar: {
-    background: "#34495e",
-    color: "white",
-    padding: "10px",
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  logoutIcon: {
-    cursor: "pointer",
-    fontSize: "20px",
-  },
-  pageContent: {
-    flex: 1,
-    padding: "20px",
-    background: "#ecf0f1",
-    borderRadius: "8px",
-    marginBottom: "20px",
-  },
-  bottomBar: {
-    background: "#34495e",
-    color: "white",
-    padding: "10px",
-    textAlign: "center",
-  },
 };
 
 export default Layout;

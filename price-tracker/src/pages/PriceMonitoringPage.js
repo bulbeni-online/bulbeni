@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { FormattedDate, FormattedMoney } from "../components/FormatComponents";
 import { dateToStr } from "../util/DateUtil";
+import styles from "./PriceMonitoringPage.module.css";
 
 ChartJS.register(
   CategoryScale,
@@ -77,6 +78,9 @@ const PriceMonitoringPage = () => {
           case "lastDay":
             cutoffDate = new Date(now - 24 * 60 * 60 * 1000);
             break;
+          case "lastWeek":
+            cutoffDate = new Date(now - 7 * 24 * 60 * 60 * 1000);
+            break;
           case "lastMonth":
             cutoffDate = new Date(now.setMonth(now.getMonth() - 1));
             break;
@@ -127,8 +131,8 @@ const PriceMonitoringPage = () => {
             {
               label: "Fiyat (TRY)",
               data,
-              borderColor: "rgba(75, 192, 192, 1)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "#1abc9c", // Teal
+              backgroundColor: "rgba(26, 188, 156, 0.2)",
               fill: true,
               tension: 0.1,
             },
@@ -172,67 +176,68 @@ const PriceMonitoringPage = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Fiyat İzleme</h2>
+    <div className={styles.container}>
+      <h2 className={styles.header}>Fiyat İzleme</h2>
 
-      <div style={styles.selectorContainer}>
-        <label style={styles.label}>URL Seçin:</label>
-        <select value={selectedProductId} onChange={handleProductChange} style={styles.select}>
+      <div className={styles.selectorContainer}>
+        <label className={styles.label}>URL Seçin:</label>
+        <select value={selectedProductId} onChange={handleProductChange} className={styles.select}>
           {productEntries.map((entry) => (
             <option key={entry.id} value={entry.id}>
               {entry.name}
             </option>
           ))}
         </select>
-        <label style={styles.label}>Süre Seçin:</label>
-        <select value={selectedDuration} onChange={handleDurationChange} style={styles.select}>
+        <label className={styles.label}>Süre Seçin:</label>
+        <select value={selectedDuration} onChange={handleDurationChange} className={styles.select}>
           <option value="lastHour">Son Saat</option>
           <option value="lastDay">Son Gün</option>
+          <option value="lastWeek">Son Hafta</option>
           <option value="lastMonth">Son Ay</option>
           <option value="lastYear">Son Yıl</option>
           <option value="allTime">Tümü</option>
         </select>
       </div>
 
-      {message && <p style={styles.message}>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
 
       {priceData.labels.length > 0 ? (
         <>
-          <div style={styles.summaryContainer}>
-            <p style={styles.summaryStat}>
+          <div className={styles.summaryContainer}>
+            <p className={styles.summaryStat}>
               Minimum Fiyat:{" "}
-              <span style={styles.statValue}>
+              <span className={styles.statValue}>
                 <FormattedMoney number={minPrice.value} />{" "}
                 ({<FormattedDate date={minPrice.date} format="short" />})
               </span>
             </p>
-            <p style={styles.summaryStat}>
+            <p className={styles.summaryStat}>
               Maksimum Fiyat:{" "}
-              <span style={styles.statValue}>
+              <span className={styles.statValue}>
                 <FormattedMoney number={maxPrice.value} />{" "}
                 ({<FormattedDate date={maxPrice.date} format="short" />})
               </span>
             </p>
           </div>
-          <div style={styles.chartContainer}>
+          <div className={styles.chartContainer}>
             <Line data={priceData} options={chartOptions} />
           </div>
-          <div style={styles.gridContainer}>
-            <h3 style={styles.gridHeader}>Fiyat Kayıtları ({priceEntries.length} kayıt)</h3>
-            <table style={styles.table}>
+          <div className={styles.gridContainer}>
+            <h3 className={styles.gridHeader}>Fiyat Kayıtları ({priceEntries.length} kayıt)</h3>
+            <table className={styles.table}>
               <thead>
                 <tr>
-                  <th style={styles.th}>Tarih</th>
-                  <th style={styles.th}>Fiyat (TRY)</th>
+                  <th className={styles.th}>Tarih</th>
+                  <th className={styles.th}>Fiyat (TRY)</th>
                 </tr>
               </thead>
               <tbody>
                 {priceEntries.map((entry, index) => (
                   <tr key={index}>
-                    <td style={styles.td}>
+                    <td className={styles.td}>
                       <FormattedDate date={entry.timestamp} format="full" />
                     </td>
-                    <td style={styles.td}>
+                    <td className={styles.td}>
                       <FormattedMoney number={entry.price} />
                     </td>
                   </tr>
@@ -242,58 +247,12 @@ const PriceMonitoringPage = () => {
           </div>
         </>
       ) : (
-        <p style={styles.noData}>Seçilen URL ve süre için fiyat verisi bulunamadı.</p>
+        <p ></p>
       )}
     </div>
   );
 };
 
-const styles = {
-  container: { padding: "20px", background: "#fff", borderRadius: "8px" },
-  header: { marginBottom: "20px", color: "#2c3e50" },
-  selectorContainer: {
-    marginBottom: "20px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "20px",
-  },
-  label: { marginRight: "10px", fontSize: "16px", color: "#34495e" },
-  select: {
-    padding: "10px",
-    fontSize: "16px",
-    width: "40%",
-    maxWidth: "300px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-  },
-  summaryContainer: {
-    marginTop: "20px",
-    marginBottom: "20px",
-    textAlign: "center",
-  },
-  summaryStat: {
-    fontSize: "16px",
-    margin: "10px 0",
-    color: "#34495e",
-  },
-  statValue: {
-    fontWeight: "bold",
-    color: "#2c3e50",
-  },
-  chartContainer: { maxWidth: "800px", margin: "0 auto" },
-  message: { marginTop: "15px", color: "#dc3545", textAlign: "center" },
-  noData: { marginTop: "20px", color: "#6c757d", textAlign: "center" },
-  gridContainer: { marginTop: "30px", maxWidth: "800px", margin: "30px auto" },
-  gridHeader: { color: "#2c3e50", marginBottom: "10px" },
-  table: { width: "100%", borderCollapse: "collapse" },
-  th: {
-    borderBottom: "2px solid #ddd",
-    padding: "10px",
-    textAlign: "left",
-    backgroundColor: "#f5f5f5",
-  },
-  td: { borderBottom: "1px solid #ddd", padding: "10px" },
-};
+
 
 export default PriceMonitoringPage;
