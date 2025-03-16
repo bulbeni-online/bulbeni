@@ -33,6 +33,7 @@ public class ProductEntry {
     public static final String PRODUCT_URL_HOST_UNKNOWN = "--unknown--";
     public static final String PRODUCT_URL_HOST_HEPSIBURADA = "hepsiburada";
     public static final String PRODUCT_URL_HOST_PTTAVM = "pttavm";
+    public static final String PRODUCT_URL_HOST_MEDIAMARKT = "mediamarkt";
 
     @DynamoDbPartitionKey
     public String getUserId() {
@@ -51,6 +52,8 @@ public class ProductEntry {
                 setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_HEPSIBURADA + "\" }");
             else if (url.toLowerCase(Locale.ENGLISH).contains(PRODUCT_URL_HOST_PTTAVM))
                 setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_PTTAVM + "\" }");
+            else if (url.toLowerCase(Locale.ENGLISH).contains(PRODUCT_URL_HOST_MEDIAMARKT))
+                setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_MEDIAMARKT + "\" }");
             else
                 setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_UNKNOWN + "\" }");
         }else{

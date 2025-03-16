@@ -26,6 +26,8 @@ public class CollectorFactory {
                     return new HepsiburadaCollector();
                 case ProductEntry.PRODUCT_URL_HOST_PTTAVM:
                     return new PttavmCollector();
+                case ProductEntry.PRODUCT_URL_HOST_MEDIAMARKT:
+                    return new MediamarktCollector();
                 case ProductEntry.PRODUCT_URL_HOST_UNKNOWN:
                 default:
                     return new UnknownCollector();
