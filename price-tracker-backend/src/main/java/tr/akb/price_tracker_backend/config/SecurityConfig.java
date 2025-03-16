@@ -19,6 +19,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import tr.akb.price_tracker_backend.repository.UserRepository;
+import tr.akb.price_tracker_backend.security.DynamoDBUserDetailsService;
 import tr.akb.price_tracker_backend.security.JWTAuthenticationFilter;
 import tr.akb.price_tracker_backend.security.JWTUtil;
 
@@ -29,14 +31,11 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("user")
-                .password(passwordEncoder().encode("p"))
-                .roles("USER")
-                .build());
-        return manager;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Bean UserDetailsService userDetailsService(){
+        return new DynamoDBUserDetailsService(userRepository);
     }
 
     @Bean
@@ -67,6 +66,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/verify").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )

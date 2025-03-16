@@ -44,6 +44,10 @@ public class DynamoDbConfig {
                 "productEntryId", ScalarAttributeType.S,
                 "timestamp", ScalarAttributeType.S);
 
+        createTableIfNotExists(dynamoDbClient, "Users",
+                "username", ScalarAttributeType.S,
+                null, null);
+
         return DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDbClient)
                 .build();
@@ -59,29 +63,55 @@ public class DynamoDbConfig {
                     .build());
             System.out.println(tableName + " table already exists.");
         } catch (ResourceNotFoundException e) {
+
+            AttributeDefinition[] attDeffArr;
+            KeySchemaElement[] keySchemaElementArr;
+            if (sortKeyName == null){
+                attDeffArr = new AttributeDefinition[] {
+                   AttributeDefinition.builder()
+                           .attributeName(partitionKeyName)
+                           .attributeType(partitionKeyType)
+                           .build()
+                };
+                keySchemaElementArr = new KeySchemaElement[]{
+                        KeySchemaElement.builder()
+                                .attributeName(partitionKeyName)
+                                .keyType(KeyType.HASH)
+                                .build()
+                };
+            }else {
+                attDeffArr= new AttributeDefinition[] {
+                        AttributeDefinition.builder()
+                                .attributeName(partitionKeyName)
+                                .attributeType(partitionKeyType)
+                                .build()
+                        ,
+                        AttributeDefinition.builder()
+                                .attributeName(sortKeyName)
+                                .attributeType(sortKeyType)
+                                .build()
+                };
+                keySchemaElementArr = new KeySchemaElement[]{
+                        KeySchemaElement.builder()
+                                .attributeName(partitionKeyName)
+                                .keyType(KeyType.HASH)
+                                .build(),
+                        KeySchemaElement.builder()
+                                .attributeName(sortKeyName)
+                                .keyType(KeyType.RANGE)
+                                .build()
+                };
+            }
+
             // Table doesn’t exist, create it
             System.out.println("Creating " + tableName + " table...");
             dynamoDbClient.createTable(CreateTableRequest.builder()
                     .tableName(tableName)
                     .attributeDefinitions(
-                            AttributeDefinition.builder()
-                                    .attributeName(partitionKeyName)
-                                    .attributeType(partitionKeyType)
-                                    .build(),
-                            AttributeDefinition.builder()
-                                    .attributeName(sortKeyName)
-                                    .attributeType(sortKeyType)
-                                    .build()
+                            attDeffArr
                     )
                     .keySchema(
-                            KeySchemaElement.builder()
-                                    .attributeName(partitionKeyName)
-                                    .keyType(KeyType.HASH)
-                                    .build(),
-                            KeySchemaElement.builder()
-                                    .attributeName(sortKeyName)
-                                    .keyType(KeyType.RANGE)
-                                    .build()
+                            keySchemaElementArr
                     )
                     .billingMode(BillingMode.PAY_PER_REQUEST)
                     .build());
@@ -99,4 +129,5 @@ public class DynamoDbConfig {
             System.err.println("Error checking/creating " + tableName + " table: " + e.getMessage());
         }
     }
+
 }
