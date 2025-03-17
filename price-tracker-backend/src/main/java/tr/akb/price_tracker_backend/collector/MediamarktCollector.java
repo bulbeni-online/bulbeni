@@ -19,7 +19,6 @@ public class MediamarktCollector extends BaseCollector {
     protected String getPriceText(Document document) {
         Elements priceSpans = document.select("span[data-test=branded-price-whole-value]");
 
-        String cleanedPrice;
         if (!priceSpans.isEmpty()) {
             Element priceSpan = priceSpans.first();
             return priceSpan.text().trim();
@@ -44,8 +43,8 @@ public class MediamarktCollector extends BaseCollector {
     }
 
     public static void main(String[] args) {
-        String url = "https://www.mediamarkt.com.tr/tr/product/_apple-mx2e3tuamacbook-proapple-m4-pro-islemci12-cekirdek-cpu-16-cekirdek-gpu24gb-ram512gb-ssd142gumus-1241377.html"; // Buraya ürün URL'sini girin
-        url = "https://www.mediamarkt.com.tr/tr/product/_lg-75qned86t-75-inc-195-ekran-4k-smart-ai-sihirli-kumanda-hdr10-webos24-qned-tv-1237461.html";
+        String url  = /* "https://www.mediamarkt.com.tr/tr/product/_apple-mx2e3tuamacbook-proapple-m4-pro-islemci12-cekirdek-cpu-16-cekirdek-gpu24gb-ram512gb-ssd142gumus-1241377.html"; // Buraya ürün URL'sini girin
+        url = */ "https://www.mediamarkt.com.tr/tr/product/_lg-75qned86t-75-inc-195-ekran-4k-smart-ai-sihirli-kumanda-hdr10-webos24-qned-tv-1237461.html";
 
         ProductEntry productEntry = new ProductEntry();
         productEntry.setUrl(url);
@@ -56,11 +55,11 @@ public class MediamarktCollector extends BaseCollector {
         try {
             price = c.collectPrice(productEntry);
         } catch (Exception e) {
-            if (price != null) {
-                System.out.println("Ürün fiyatı: " + price);
-            } else {
-                System.out.println("Ürün fiyatı bulunamadı.");
-            }
+        }
+        if (price != null) {
+            System.out.println("Ürün fiyatı: " + price);
+        } else {
+            System.out.println("Ürün fiyatı bulunamadı.");
         }
 
     }

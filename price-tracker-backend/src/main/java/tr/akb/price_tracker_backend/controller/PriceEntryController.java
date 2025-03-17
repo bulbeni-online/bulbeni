@@ -45,7 +45,7 @@ public class PriceEntryController {
             @PathVariable String userId,
             @PathVariable Long productId) {
         Optional<ProductEntry> productEntryOpt = productEntryService.getProductEntry(userId, productId);
-        if (!productEntryOpt.isPresent()) {
+        if (productEntryOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 if product not found
         }
 

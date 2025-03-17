@@ -1,12 +1,8 @@
 package tr.akb.price_tracker_backend.collector;
 
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import tr.akb.price_tracker_backend.entity.ProductEntry;
 
 @Component
 public class PttavmCollector extends BaseCollector {

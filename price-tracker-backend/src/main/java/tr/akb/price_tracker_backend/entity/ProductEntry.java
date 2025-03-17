@@ -9,8 +9,6 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 import tr.akb.price_tracker_backend.util.ProductTypeDeserializer;
 
-import java.util.Locale;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

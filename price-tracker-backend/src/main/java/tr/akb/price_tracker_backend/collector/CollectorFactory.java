@@ -1,6 +1,5 @@
 package tr.akb.price_tracker_backend.collector;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tr.akb.price_tracker_backend.entity.ProductEntry;
@@ -46,7 +45,7 @@ public class CollectorFactory {
             java.net.URL parsedUrl = new java.net.URL(url);
             String domain = parsedUrl.getHost().toLowerCase(Locale.ENGLISH);
             return collectorMap.keySet().stream()
-                    .filter(host -> domain.contains(host))
+                    .filter(domain::contains)
                     .findFirst()
                     .orElse(defaultCollector.getHost());
         } catch (Exception e) {
