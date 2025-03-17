@@ -1,5 +1,12 @@
 # TODO List
 
+### UI Design
+
+* Generic style must be used by app
+
+* The table/grid component must be updated like jqGrid component or more capable and more modern one
+
+* username will be written on the header - bar
 
 # Performance Optimization
 
@@ -19,10 +26,6 @@
 can appear. When clicked password change its page can be opened without layout
 and when it is successfully changed user is redirected to the login page.
 
-### User authentication
-
-* User credentials must be managed via db
-
 
 ### Profiles
 
@@ -31,11 +34,6 @@ and when it is successfully changed user is redirected to the login page.
 * According to the active profile the right configuration must be active
 
 
-### UI Design
-
-* Generic style must be used by app
-
-* The table/grid component must be updated like jqGrid component or more capable and more modern one
 
 
 ### Configuration
@@ -51,3 +49,15 @@ When email is updated a verification mail must be sent to the new email address 
 user is newly signed in.
 
 * User reports such as howmany customers, grouped by their memberships and used resources.
+
+### Notification Page
+
+* User may define their threshold values for the prices. For exceeding any threshold of a product (maybe min/max thresholds) the user may 
+be notified by email/(sms in the future)
+
+
+### Anroid App 
+
+* Viewing the prices and
+* notification by the app in the phone
+* 

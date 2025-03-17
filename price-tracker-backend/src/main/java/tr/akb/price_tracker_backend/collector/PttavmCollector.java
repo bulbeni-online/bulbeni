@@ -4,6 +4,9 @@ import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class PttavmCollector extends BaseCollector {
 
@@ -13,15 +16,16 @@ public class PttavmCollector extends BaseCollector {
     }
 
     @Override
-    protected String getPriceText(Document document) {
-        return document.select("div.text-eGreen-700").text();  // Select div with class text-eGreen-700
-    }
+    protected List<PriceParsingStrategy> getCollectorParsingStrategies() {
+        return Arrays.asList(
+                new PriceParsingStrategy() {
+                    @Override
+                    protected String getPriceText(Document document) {
+                        return document.select("div.text-eGreen-700").text();
+                    }
+                }
 
-    @Override
-    protected Double parseThePrice(String priceText) {
-        // Assuming price is like "1.234,56 TL", clean and parse it
-        String cleanedPrice = priceText.substring(0, priceText.indexOf("TL")).replaceAll("[^0-9,]", "").replace(",", ".");
-        return Double.parseDouble(cleanedPrice);
+        );
     }
 
     @Override
