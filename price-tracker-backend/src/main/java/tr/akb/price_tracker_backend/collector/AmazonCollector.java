@@ -2,9 +2,7 @@ package tr.akb.price_tracker_backend.collector;
 
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
-import tr.akb.price_tracker_backend.entity.ProductEntry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +17,7 @@ public class AmazonCollector extends BaseCollector {
 
     @Override
     protected List<PriceParsingStrategy> getCollectorParsingStrategies() {
-        return Arrays.asList(
+        return List.of(
                 new PriceParsingStrategy() {
                     @Override
                     protected String getPriceText(Document document) {

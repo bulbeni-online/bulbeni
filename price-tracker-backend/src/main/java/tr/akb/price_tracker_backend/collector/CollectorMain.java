@@ -2,8 +2,6 @@ package tr.akb.price_tracker_backend.collector;
 
 import tr.akb.price_tracker_backend.entity.ProductEntry;
 
-import java.util.List;
-
 public class CollectorMain {
 
     public static void executeMain(BaseCollector collector, String[] urlArr){
