@@ -32,9 +32,10 @@ const PriceMonitoringPage = () => {
   const [selectedDuration, setSelectedDuration] = useState("lastMonth");
   const [priceData, setPriceData] = useState({ labels: [], datasets: [] });
   const [priceEntries, setPriceEntries] = useState([]);
-  const [minPrice, setMinPrice] = useState(null); // Min price with date
-  const [maxPrice, setMaxPrice] = useState(null); // Max price with date
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
   const [message, setMessage] = useState("");
+  const [isFetching, setIsFetching] = useState(false); // For button loading state
 
   useEffect(() => {
     fetchProductEntries();
@@ -70,7 +71,6 @@ const PriceMonitoringPage = () => {
         const now = new Date();
         let cutoffDate;
 
-        // Set cutoff date based on selected duration
         switch (selectedDuration) {
           case "lastHour":
             cutoffDate = new Date(now - 60 * 60 * 1000);
@@ -94,7 +94,6 @@ const PriceMonitoringPage = () => {
             cutoffDate = null;
         }
 
-        // Filter prices based on cutoff date
         const allPrices = response.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         const filteredPrices = cutoffDate
           ? allPrices.filter((entry) => new Date(entry.timestamp) >= cutoffDate)
@@ -102,27 +101,25 @@ const PriceMonitoringPage = () => {
 
         setPriceEntries(filteredPrices);
 
-        // Calculate min and max prices
         if (filteredPrices.length > 0) {
           const prices = filteredPrices.map((entry) => entry.price);
           const minPriceIndex = prices.indexOf(Math.min(...prices));
           const maxPriceIndex = prices.indexOf(Math.max(...prices));
           setMinPrice({
             value: filteredPrices[minPriceIndex].price,
-            date: filteredPrices[minPriceIndex].timestamp
+            date: filteredPrices[minPriceIndex].timestamp,
           });
           setMaxPrice({
-            value:filteredPrices[maxPriceIndex].price,
-            date: filteredPrices[maxPriceIndex].timestamp
+            value: filteredPrices[maxPriceIndex].price,
+            date: filteredPrices[maxPriceIndex].timestamp,
           });
         } else {
           setMinPrice(null);
           setMaxPrice(null);
         }
 
-        const chartPrices = [...filteredPrices].sort( (a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        const chartPrices = [...filteredPrices].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         const labels = chartPrices.map((entry) => dateToStr(entry.timestamp, true, "short"));
-        console.log("labels:" + labels);
         const data = chartPrices.map((entry) => entry.price);
 
         setPriceData({
@@ -131,7 +128,7 @@ const PriceMonitoringPage = () => {
             {
               label: "Fiyat (TRY)",
               data,
-              borderColor: "#1abc9c", // Teal
+              borderColor: "#1abc9c",
               backgroundColor: "rgba(26, 188, 156, 0.2)",
               fill: true,
               tension: 0.1,
@@ -161,6 +158,31 @@ const PriceMonitoringPage = () => {
   const handleDurationChange = (e) => {
     setSelectedDuration(e.target.value);
     setMessage("");
+  };
+
+  // New function to fetch price in real-time
+  const handleFetchPriceNow = async () => {
+    if (!selectedProductId) {
+      setMessage("Lütfen bir ürün seçin.");
+      return;
+    }
+
+    setIsFetching(true);
+    try {
+      const response = await api.post(`/price-entries/fetch/${username}/${selectedProductId}`);
+      if (response.status === 200) {
+        setMessage("Fiyat başarıyla güncellendi.");
+        // Refresh price history to include the new price
+        await fetchPriceHistory();
+      } else {
+        setMessage("Fiyat alınırken hata oluştu.");
+      }
+    } catch (error) {
+      console.error("Error fetching price:", error);
+      setMessage("Sunucu hatası. Lütfen tekrar deneyin.");
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   const chartOptions = {
@@ -197,6 +219,14 @@ const PriceMonitoringPage = () => {
           <option value="lastYear">Son Yıl</option>
           <option value="allTime">Tümü</option>
         </select>
+        {/* New Button */}
+        <button
+          onClick={handleFetchPriceNow}
+          className={styles.fetchButton}
+          disabled={isFetching}
+        >
+          {isFetching ? "Alınıyor..." : "Şimdi Fiyat Al"}
+        </button>
       </div>
 
       {message && <p className={styles.message}>{message}</p>}
@@ -207,15 +237,15 @@ const PriceMonitoringPage = () => {
             <p className={styles.summaryStat}>
               Minimum Fiyat:{" "}
               <span className={styles.statValue}>
-                <FormattedMoney number={minPrice.value} />{" "}
-                ({<FormattedDate date={minPrice.date} format="short" />})
+                <FormattedMoney number={minPrice?.value} />{" "}
+                ({minPrice && <FormattedDate date={minPrice.date} format="short" />})
               </span>
             </p>
             <p className={styles.summaryStat}>
               Maksimum Fiyat:{" "}
               <span className={styles.statValue}>
-                <FormattedMoney number={maxPrice.value} />{" "}
-                ({<FormattedDate date={maxPrice.date} format="short" />})
+                <FormattedMoney number={maxPrice?.value} />{" "}
+                ({maxPrice && <FormattedDate date={maxPrice.date} format="short" />})
               </span>
             </p>
           </div>
@@ -247,12 +277,10 @@ const PriceMonitoringPage = () => {
           </div>
         </>
       ) : (
-        <p ></p>
+        <p></p>
       )}
     </div>
   );
 };
-
-
 
 export default PriceMonitoringPage;
