@@ -1,52 +1,46 @@
 package tr.akb.price_tracker_backend.collector;
 
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import tr.akb.price_tracker_backend.entity.ProductEntry;
 
+@Component
 public class MediamarktCollector extends BaseCollector {
 
-    private static final Logger logger = LoggerFactory.getLogger(MediamarktCollector.class);
-
+    @Override
+    protected String getHost() {
+        return "mediamarkt";
+    }
 
     @Override
-    public Double collectPrice(ProductEntry productEntry) throws Exception {
-        try {
-            String url = getUrl(productEntry);
-            Connection connection = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
-                    .header("Referer", "https://www.mediamarkt.com.tr")
-                    .header("Origin", "https://www.mediamarkt.com.tr");
+    protected String getPriceText(Document document) {
+        Elements priceSpans = document.select("span[data-test=branded-price-whole-value]");
 
-
-            Document doc = connection.get();
-
-            Elements priceSpans = doc.select("span[data-test=branded-price-whole-value]");
-
-            String cleanedPrice;
-            if (!priceSpans.isEmpty()) {
-                Element priceSpan = priceSpans.first();
-                String priceText = priceSpan.text().trim();
-                cleanedPrice = priceText.replace("₺", "")
-                        .replaceAll("[^0-9,]", "")
-                        .replace(",", ".");
-            } else {
-                return null;
-            }
-
-            //debug
-            logger.info("cleanedPrice for {} is {}", productEntry.getName(), cleanedPrice);
-            return Double.parseDouble(cleanedPrice);
-
-        } catch (Exception e) {
-            logger.error("Exception while getting price from url:{}", productEntry.getUrl(), e);
+        String cleanedPrice;
+        if (!priceSpans.isEmpty()) {
+            Element priceSpan = priceSpans.first();
+            return priceSpan.text().trim();
+        } else {
             return null;
         }
+    }
+
+    @Override
+    protected Double parseThePrice(String priceText) {
+        String cleanedPrice = priceText.replace("₺", "")
+                .replaceAll("[^0-9,]", "")
+                .replace(",", ".");
+
+        return Double.parseDouble(cleanedPrice);
+    }
+
+    @Override
+    protected Connection updateAgentHeadersCookies(Connection connection) {
+        return connection.header("Referer", "https://www.mediamarkt.com.tr")
+                .header("Origin", "https://www.mediamarkt.com.tr");
     }
 
     public static void main(String[] args) {

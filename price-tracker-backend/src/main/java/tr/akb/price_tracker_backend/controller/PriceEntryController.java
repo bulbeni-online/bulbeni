@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import tr.akb.price_tracker_backend.entity.PriceEntry;
 import tr.akb.price_tracker_backend.entity.ProductEntry;
 import tr.akb.price_tracker_backend.service.PriceEntryService;
+import tr.akb.price_tracker_backend.service.PriceMonitoringService;
 import tr.akb.price_tracker_backend.service.ProductEntryService;
 
 import java.util.List;
@@ -20,6 +21,12 @@ public class PriceEntryController {
     PriceEntryService priceEntryService;
 
     @Autowired
+    ProductEntryService productEntryService;
+
+    @Autowired
+    PriceMonitoringService priceMonitoringService;
+
+    @Autowired
     public PriceEntryController(PriceEntryService priceEntryService) {
         this.priceEntryService = priceEntryService;
     }
@@ -31,6 +38,23 @@ public class PriceEntryController {
         String productEntryId = userId + "#" + productId;
         List<PriceEntry> priceEntries = priceEntryService.getPriceEntriesByProductId(productEntryId);
         return ResponseEntity.ok(priceEntries);
+    }
+
+    @PostMapping("/fetch/{userId}/{productId}")
+    public ResponseEntity<PriceEntry> fetchPriceNow(
+            @PathVariable String userId,
+            @PathVariable Long productId) {
+        Optional<ProductEntry> productEntryOpt = productEntryService.getProductEntry(userId, productId);
+        if (!productEntryOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 if product not found
+        }
+
+        PriceEntry priceEntry = priceMonitoringService.fetchPriceNow(userId, productId);
+        if (priceEntry != null) {
+            return ResponseEntity.ok(priceEntry); // 200 with the new price entry
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 500 if fetch fails
+        }
     }
 
 }

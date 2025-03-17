@@ -21,7 +21,6 @@ public class ProductEntryService {
 
     public ProductEntry createProductEntry(ProductEntry productEntry) {
         productEntry.setId(System.currentTimeMillis()); // Example of auto-generated ID
-        productEntry.updateProductProperties();
         productEntry.setCreatedAt(Instant.now().toString());
         productEntry.setUpdatedAt(Instant.now().toString());
         productEntryRepository.save(productEntry);

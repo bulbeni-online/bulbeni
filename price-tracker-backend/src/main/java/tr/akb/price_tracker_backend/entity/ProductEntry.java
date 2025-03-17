@@ -45,20 +45,4 @@ public class ProductEntry {
         return id;
     }
 
-    public void updateProductProperties() {
-
-        if (ProductType.URL.equals(productType)) {
-            if (url.toLowerCase(Locale.ENGLISH).contains(PRODUCT_URL_HOST_HEPSIBURADA))
-                setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_HEPSIBURADA + "\" }");
-            else if (url.toLowerCase(Locale.ENGLISH).contains(PRODUCT_URL_HOST_PTTAVM))
-                setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_PTTAVM + "\" }");
-            else if (url.toLowerCase(Locale.ENGLISH).contains(PRODUCT_URL_HOST_MEDIAMARKT))
-                setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_MEDIAMARKT + "\" }");
-            else
-                setProductTypeProperties("{ \"host\": \"" +  PRODUCT_URL_HOST_UNKNOWN + "\" }");
-        }else{
-            setProductTypeProperties("{ }");
-        }
-
-    }
 }
