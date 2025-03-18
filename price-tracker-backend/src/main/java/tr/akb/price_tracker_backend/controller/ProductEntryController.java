@@ -50,4 +50,22 @@ public class ProductEntryController {
             return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{userId}/{id}")
+    public ResponseEntity<ProductEntry> updateProductEntry(
+            @PathVariable String userId,
+            @PathVariable Long id,
+            @RequestBody ProductEntry productEntry) {
+        try {
+            // Ensure the userId matches the path
+            productEntry.setUserId(userId);
+            productEntry.setId(id);
+
+            Optional<ProductEntry> updatedEntry = productEntryService.updateProductEntry(productEntry);
+            return updatedEntry
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

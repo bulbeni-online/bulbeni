@@ -39,4 +39,21 @@ public class ProductEntryService {
         return productEntryRepository.deleteByUserIdAndId(userId, id);
     }
 
+    public Optional<ProductEntry> updateProductEntry(ProductEntry productEntry) {
+        Optional<ProductEntry> existingEntry = productEntryRepository.findByUserIdAndId(
+                productEntry.getUserId(),
+                productEntry.getId()
+        );
+
+        if (existingEntry.isPresent()) {
+            ProductEntry entryToUpdate = existingEntry.get();
+            entryToUpdate.setName(productEntry.getName());
+            entryToUpdate.setUrl(productEntry.getUrl());
+            entryToUpdate.setProductType(productEntry.getProductType());
+            productEntryRepository.save(entryToUpdate);
+            return Optional.of(productEntry);
+        }
+        return Optional.empty();
+    }
+
 }
