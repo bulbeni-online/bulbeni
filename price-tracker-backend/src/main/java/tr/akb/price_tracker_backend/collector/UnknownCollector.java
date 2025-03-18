@@ -4,6 +4,8 @@ import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UnknownCollector extends BaseCollector {
 
@@ -13,17 +15,17 @@ public class UnknownCollector extends BaseCollector {
     }
 
     @Override
+    protected List<PriceParsingStrategy> getCollectorParsingStrategies() {
+        return List.of();
+    }
+
+    @Override
     protected Connection updateAgentHeadersCookies(Connection connection) {
         return connection;
     }
 
     @Override
-    protected String getPriceText(Document document) {
-        return null;
-    }
-
-    @Override
-    protected Double parseThePrice(String priceText) {
+    protected Double parseThePrice(Document document) {
         return null;
     }
 }
