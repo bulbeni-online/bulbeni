@@ -21,7 +21,7 @@ public class PttavmCollector extends BaseCollector {
                 new PriceParsingStrategy() {
                     @Override
                     protected String getPriceText(Document document) {
-                        return document.select("div.text-eGreen-700").text();
+                        return document.selectFirst("div.text-eGreen-700").text();
                     }
                 }
 
@@ -32,6 +32,14 @@ public class PttavmCollector extends BaseCollector {
     protected Connection updateAgentHeadersCookies(Connection connection) {
         return connection.header("Referer", "https://www.pttavm.com/")
                 .header("Origin", "https://www.pttavm.com");
+    }
+
+    public static void main(String[] args) {
+        String[] urlArr = new String[]{
+                "https://www.pttavm.com/apple-iphone-16-pro-max-256-gb-col-titanyum-ithalatci-garantili-p-1045860690",
+                "https://www.pttavm.com/selpak-3-katli-32li-tuvalet-kagidi-p-548247534"
+        };
+        CollectorMain.executeMain(new PttavmCollector(), urlArr);
     }
 
 }
