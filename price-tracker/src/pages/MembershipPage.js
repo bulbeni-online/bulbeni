@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import styles from "./ProfilePage.module.css";
+import styles from "./MembershipPage.module.css";
 
 const ProfilePage = () => {
   const [username, setUsername] = useState("");
@@ -56,11 +56,18 @@ const ProfilePage = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className="pageHeader">Profil</h2>
+      <h2 className="pageHeader">Üyelik</h2>
       <div className={styles.section}>
         {fetchError && <p className={styles.error}>{fetchError}</p>}
         <p className={styles.stat}>Kullanıcı Adı: <span className={styles.statValue}>{username || "Yükleniyor"}</span> </p>
         <p className={styles.stat}>E-posta: <span className={styles.statValue}>{email || "Yükleniyor"}</span></p>
+      </div>
+
+      <div className={styles.section}>
+        <h3 className={styles.title}>Üyelik Detayları</h3>
+        <p className={styles.membership}>
+          Üyelik Paketi: <span className={styles.membershipValue}>Ücretsiz</span>
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import styles from "./ProfilePage.module.css";
+import styles from "./ChangePasswordPage.module.css";
 
 const ProfilePage = () => {
   const [username, setUsername] = useState("");
@@ -56,12 +56,42 @@ const ProfilePage = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className="pageHeader">Profil</h2>
+      <h2 className="pageHeader">Şifre Değiştir</h2>
       <div className={styles.section}>
         {fetchError && <p className={styles.error}>{fetchError}</p>}
         <p className={styles.stat}>Kullanıcı Adı: <span className={styles.statValue}>{username || "Yükleniyor"}</span> </p>
         <p className={styles.stat}>E-posta: <span className={styles.statValue}>{email || "Yükleniyor"}</span></p>
       </div>
+
+      <div className={styles.section}>
+        <h3 className={styles.title}>Şifre Değiştir</h3>
+        {error && <p className={styles.error}>{error}</p>}
+        {success && <p className={styles.success}>{success}</p>}
+        <form onSubmit={handleChangePassword} className={styles.form}>
+          <input
+            type="password"
+            placeholder="Mevcut Şifre"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            required
+            className={styles.input}
+            disabled={loading}
+          />
+          <input
+            type="password"
+            placeholder="Yeni Şifre"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+            className={styles.input}
+            disabled={loading}
+          />
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? "Değiştiriliyor..." : "Şifreyi Değiştir"}
+          </button>
+        </form>
+      </div>
+
     </div>
   );
 };

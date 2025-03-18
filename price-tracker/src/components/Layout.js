@@ -1,16 +1,51 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaKey, FaIdCard, FaUserCog } from "react-icons/fa";
 import "./Layout.css";
 
 const Layout = () => {
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const popupRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
   };
+
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  // Close popup when clicking outside and reset button state
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isPopupOpen &&
+        popupRef.current &&
+        !popupRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setIsPopupOpen(false);
+        buttonRef.current.blur(); // Remove focus from button
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isPopupOpen]);
+
+  const handleMouseLeave = () => {
+    setIsPopupOpen(false);
+    buttonRef.current.blur(); // Remove focus when mouse leaves
+  };
+
+  const username = localStorage.getItem("user") || "Misafir";
 
   return (
     <div className="layout-container">
@@ -35,19 +70,65 @@ const Layout = () => {
       {/* Main Content Area */}
       <div className="content">
         <header className="top-bar">
-          <Link to="/profile" className="profile-link">
-            <FaUser className="nav-icon" /> Profil
-          </Link>
-          <span
-            className="logout-icon"
-            onClick={handleLogout}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && handleLogout()}
-            aria-label="Çıkış Yap"
-          >
-            <FaSignOutAlt /> Çıkış Yap
-          </span>
+          <div className="account-container">
+            <button
+              ref={buttonRef}
+              className={`account-button ${isPopupOpen ? "active" : ""}`} // Dynamic class
+              onClick={togglePopup}
+              aria-label={`Hesap menüsünü aç - Kullanıcı: ${username}`}
+              aria-expanded={isPopupOpen} // Accessibility improvement
+            >
+              <FaUser className="nav-icon" /> {username}
+            </button>
+            {isPopupOpen && (
+              <div
+                ref={popupRef}
+                className="account-popup"
+                onMouseLeave={handleMouseLeave}
+              >
+                <ul className="popup-list">
+                  <li>
+                    <Link
+                      to="/change-password"
+                      className="popup-item"
+                      onClick={() => setIsPopupOpen(false)}
+                    >
+                      <FaKey className="popup-icon" /> Şifre Değiştir
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/profile"
+                      className="popup-item"
+                      onClick={() => setIsPopupOpen(false)}
+                    >
+                      <FaIdCard className="popup-icon" /> Profil
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/membership"
+                      className="popup-item"
+                      onClick={() => setIsPopupOpen(false)}
+                    >
+                      <FaUserCog className="popup-icon" /> Üyelik
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="popup-item logout-button"
+                      onClick={() => {
+                        handleLogout();
+                        setIsPopupOpen(false);
+                      }}
+                    >
+                      <FaSignOutAlt className="popup-icon" /> Çıkış Yap
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </header>
 
         {/* Page Content */}
@@ -57,7 +138,7 @@ const Layout = () => {
 
         {/* Footer */}
         <footer className="bottom-bar">
-          <p>&copy; 2025 akb</p>
+          <p>© 2025 akb</p>
         </footer>
       </div>
     </div>

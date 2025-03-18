@@ -199,7 +199,7 @@ const PriceMonitoringPage = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.header}>Fiyat İzleme</h2>
+      <h2 className="pageHeader">Fiyat İzleme</h2>
 
       <div className={styles.selectorContainer}>
         <label className={styles.label}>URL Seçin:</label>
@@ -237,15 +237,19 @@ const PriceMonitoringPage = () => {
             <p className={styles.summaryStat}>
               Minimum Fiyat:{" "}
               <span className={styles.statValue}>
-                <FormattedMoney number={minPrice?.value} />{" "}
-                ({minPrice && <FormattedDate date={minPrice.date} format="short" />})
+                <FormattedMoney number={minPrice?.value} />
+              </span>
+              <span className={styles.statDate}>
+                {minPrice && <FormattedDate date={minPrice.date} format="short" />}
               </span>
             </p>
             <p className={styles.summaryStat}>
               Maksimum Fiyat:{" "}
               <span className={styles.statValue}>
-                <FormattedMoney number={maxPrice?.value} />{" "}
-                ({maxPrice && <FormattedDate date={maxPrice.date} format="short" />})
+                <FormattedMoney number={maxPrice?.value} />
+              </span>
+              <span className={styles.statDate}>
+                {maxPrice && <FormattedDate date={maxPrice.date} format="short" />}
               </span>
             </p>
           </div>

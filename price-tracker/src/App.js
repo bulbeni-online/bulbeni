@@ -5,7 +5,9 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProductPage from "./pages/ProductPage";
 import PriceMonitoringPage from "./pages/PriceMonitoringPage";
-import ProfilePage from "./pages/ProfilePage"; // Import ProfilePage
+import ProfilePage from "./pages/ProfilePage";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
+import MembershipPage from "./pages/MembershipPage";
 import PrivateRoute from "./components/PrivateRoute";
 import LogoutPage from "./pages/LogoutPage";
 import Layout from "./components/Layout";
@@ -24,7 +26,9 @@ function App() {
           <Route path="/dashboard" element={<PrivateRoute element={DashboardPage} />} />
           <Route path="/product" element={<PrivateRoute element={ProductPage} />} />
           <Route path="/price-monitor" element={<PrivateRoute element={PriceMonitoringPage} />} />
-          <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} /> {/* New route */}
+          <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
+          <Route path="/change-password" element={<PrivateRoute element={ChangePasswordPage} />} />
+          <Route path="/membership" element={<PrivateRoute element={MembershipPage} />} />
           <Route path="/logout" element={<PrivateRoute element={LogoutPage} />} />
         </Route>
       </Routes>

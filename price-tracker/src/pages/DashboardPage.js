@@ -57,7 +57,7 @@ const DashboardPage = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Dashboard</h2>
+      <h2 className="pageHeader" >Ana Sayfa</h2>
       {loading ? (
         <p>Yükleniyor...</p>
       ) : error ? (

@@ -6,7 +6,7 @@
 }
 
 .sidebar {
-  width: 250px;
+  width: 150px;
   background: linear-gradient(135deg, var(--primary), #34495e);
   color: #fff;
   padding: 20px 0;
@@ -56,8 +56,8 @@
 
 /* Content Area */
 .content {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  margin-left: 150px;
+  width: calc(100% - 150px);
   display: flex;
   flex-direction: column;
   background: var(--background);
@@ -73,37 +73,81 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.profile-link {
+.account-container {
+  position: relative; /* For positioning the popup */
+}
+
+.account-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #ecf0f1;
-  text-decoration: none;
   padding: 8px 15px;
-  margin-right: 10px; /* Space between Profile and Logout */
+  background: var(--darker-secondary);
+  color: #fff;
+  border: none;
   border-radius: 20px;
   font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.profile-link:hover,
-.profile-link:focus {
-  background: var(--secondary);
-}
-
-.logout-icon {
   cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.account-button:hover,
+.account-button:focus {
+  background: var(--secondary);
+  transform: translateY(-1px);
+}
+
+.account-popup {
+  position: absolute;
+  top: calc(100% + 5px); /* Small gap below button */
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* SweetAlert2-inspired shadow */
+  width: 200px;
+  padding: 10px 0;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.popup-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.popup-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
-  padding: 8px 15px;
-  border-radius: 20px;
-  transition: background 0.3s ease;
+  padding: 10px 15px;
+  color: var(--text);
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.logout-icon:hover {
-  background: var(--danger);
+.popup-item:hover,
+.popup-item:focus {
+  background: var(--background); /* Light hover effect */
+}
+
+.popup-icon {
+  font-size: 14px;
+}
+
+.logout-button {
+  color: var(--danger);
+}
+
+.logout-button:hover,
+.logout-button:focus {
+  background: rgba(231, 76, 60, 0.1); /* Light danger background */
 }
 
 .page-content {
@@ -156,16 +200,40 @@
     padding: 10px 15px;
   }
 
-  .profile-link,
-  .logout-icon {
+  .account-button {
     padding: 6px 10px;
     font-size: 14px;
+  }
+
+  .account-popup {
+    width: 160px; /* Smaller for mobile */
+  }
+
+  .popup-item {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .popup-icon {
+    font-size: 12px;
   }
 }
 
 /* Accessibility */
-.logout-icon:focus,
-.profile-link:focus {
+.account-button:focus,
+.popup-item:focus {
   outline: 2px solid var(--secondary);
   outline-offset: 2px;
+}
+
+/* SweetAlert2-inspired fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

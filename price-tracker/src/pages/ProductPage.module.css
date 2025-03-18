@@ -1,91 +1,245 @@
-.container {
-    width: 95%;
-    text-align: center;
-    border: none;
-    background: #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Match Layout */
-    border-radius: 12px;
-    padding:20px;
-  }
-  .header {
-    color: var(--danger); /* #e74c3c */
-    margin: 30px;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  
-  .select {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 10%;
-  }
-  
-  .deleteButton {
-    background: transparent;
-    border: none;
-    color: red;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .tableContainer {
-    margin-top: 50px;
-    padding: 10px;
-  }
+/* src/pages/ProductPage.module.css */
 
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.container {
+  width: 95%;
+  text-align: center;
+  border: none;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* SweetAlert2-like shadow */
+  border-radius: 12px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.header {
+  color: var(--primary); /* Use global primary instead of danger for headers */
+  margin: 20px 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Consistent spacing */
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.input,
+.select {
+  width: 80%;
+  padding: 12px;
+  margin: 5px 0;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* SweetAlert2-inspired rounded corners */
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--secondary); /* Highlight with secondary color */
+  box-shadow: 0 0 5px rgba(26, 188, 156, 0.3); /* Subtle glow */
+}
+
+.button {
+  padding: 10px 20px;
+  margin: 10px 0;
+  background: var(--secondary); /* Use global secondary */
+  color: #fff;
+  border: none;
+  border-radius: 8px; /* Match global button style */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+  width: auto; /* Remove fixed width for flexibility */
+  font-weight: 500;
+}
+
+.button:hover {
+  background: #16a085; /* Slightly darker secondary (manual darken approximation) */
+  transform: translateY(-1px); /* Subtle lift effect like SweetAlert2 */
+}
+
+.tableContainer {
+  margin-top: 40px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate; /* Better for rounded corners */
+  border-spacing: 0;
+  margin-top: 10px;
+}
+
+.th {
+  padding: 12px;
+  background-color: var(--background); /* Use global background */
+  color: var(--text); /* Use global text color */
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+}
+
+.td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.urlCell {
+  max-width: 300px;
+  white-space: normal;
+  overflow: hidden;
+  word-break: break-all; /* Better URL wrapping */
+}
+
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.message {
+  margin: 20px 0;
+  color: var(--danger); /* Keep danger for error messages */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* SweetAlert2-like overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px; /* More pronounced rounding */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Stronger shadow like SweetAlert2 */
+  width: 70%;
+  max-width: 500px; /* Slightly narrower for modern look */
+  animation: fadeIn 0.3s ease; /* Subtle animation */
+}
+
+.disabledContent {
+  pointer-events: none;
+  opacity: 0.6; /* Slightly more visible than 0.5 */
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.editButton {
+  background: var(--secondary); /* Use secondary for edit */
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.editButton:hover {
+  background: #16a085; /* Darker secondary */
+  transform: translateY(-1px);
+}
+
+.deleteButton {
+  background: var(--danger); /* Use global danger */
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.deleteButton:hover {
+  background: #c0392b; /* Slightly darker danger */
+  transform: translateY(-1px);
+}
+
+.cancelButton {
+  background: #ecf0f1; /* Light gray for neutral action */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--text);
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.cancelButton:hover {
+  background: #dfe4e6;
+  transform: translateY(-1px);
+}
+
+.urlTextarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9f9f9; /* Slightly off-white for read-only */
+  resize: none;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  color: var(--text);
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.radioOption {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text);
+}
+
+.label {
+  margin: 0;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* SweetAlert2-inspired fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .th {
-    border: 1px solid black;
-    padding: 8px;
-    background-color: #f4f6f9; /* Lighter gray */
-    text-align: left;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .urlCell {
-    max-width: 300px;
-    white-space: normal;
-    overflow: hidden;
-  }
-  
-  .pagination {
-    margin-top: 10px;
-  }
-  
-  .message {
-    margin: 30px;
-    color: var(--danger);
-  }
+}

@@ -1,112 +1,175 @@
-.container {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Match Layout shadow */
-    border: none; /* Remove border for cleaner look */
-    margin-bottom: 50px;
-    padding:20px
-  }
-  
-  .header {
-    margin: 20px;
-    color: var(--primary); /* #2c3e50 */
-  }
-  
-  .selectorContainer {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .label {
-    margin-right: 10px;
-    font-size: 16px;
-    color: #34495e;
-  }
-  
-  .select {
-    padding: 10px;
-    font-size: 16px;
-    width: 40%;
-    max-width: 300px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .summaryContainer {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .summaryStat {
-    font-size: 16px;
-    margin: 10px 0;
-    color: #34495e;
-  }
-  
-  .statValue {
-    font-weight: bold;
-    color: var(--secondary); /* #1abc9c */
-  }
-  
-  .chartContainer {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .message {
-    margin-top: 50px;
-    color: var(--danger); /* #e74c3c */
-    text-align: center;
-  }
-  
-  .noData {
-    margin-top: 20px;
-    color: var(--danger);
-    text-align: center;
-  }
-  
-  .gridContainer {
-    margin-top: 30px;
-    max-width: 800px;
-    margin: 30px auto;
-  }
-  
-  .gridHeader {
-    color: #2c3e50;
-    margin-bottom: 10px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .th {
-    border-bottom: 2px solid #ddd;
-    padding: 10px;
-    text-align: left;
-    background-color: #f4f6f9; /* Lighter gray */
-  }
-  
-  .td {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-  }
+/* src/pages/PriceMonitoringPage.module.css */
 
-  .fetchButton {
-    padding: 8px 16px;
-    background-color: #1abc9c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .fetchButton:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-  }
+.container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for depth */
+  border: none;
+  margin-bottom: 50px;
+  padding: 20px;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  margin: 20px 0;
+  color: var(--primary); /* Use global primary */
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.selectorContainer {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Consistent spacing */
+}
+
+.label {
+  margin: 0; /* Remove manual margin, use gap instead */
+  font-size: 16px;
+  color: var(--text); /* Use global text color */
+  font-weight: 500;
+}
+
+.select {
+  padding: 12px;
+  font-size: 16px;
+  width: 40%;
+  max-width: 300px;
+  border-radius: 8px; /* SweetAlert2-inspired rounding */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--secondary); /* Highlight with secondary */
+  box-shadow: 0 0 5px rgba(26, 188, 156, 0.3); /* Subtle glow */
+}
+
+.summaryContainer {
+  margin: 25px 0;
+  text-align: center;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.summaryStat {
+  font-size: 16px;
+  margin: 15px 0;
+  color: var(--text); /* Use global text color */
+}
+
+.statValue {
+  margin-left: 10px;
+  font-weight: 600; /* Slightly bolder */
+  color: var(--secondary); /* Use global secondary */
+  font-size: large;
+}
+
+.statDate {
+  color: var(--secondary);
+  margin-left: 10px;
+  font-weight: 400;
+  font-size: medium;
+}
+
+.chartContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Consistent shadow */
+}
+
+.message {
+  margin-top: 50px;
+  color: var(--danger); /* Use global danger */
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(231, 76, 60, 0.1); /* Light danger background */
+}
+
+.noData {
+  margin-top: 20px;
+  color: var(--danger); /* Use global danger */
+  text-align: center;
+  font-size: 16px;
+  font-style: italic;
+  padding: 10px;
+  background: rgba(231, 76, 60, 0.05); /* Very light danger background */
+}
+
+.gridContainer {
+  margin: 30px auto;
+  max-width: 800px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Consistent shadow */
+}
+
+.gridHeader {
+  color: var(--primary); /* Use global primary */
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate; /* Better for styling */
+  border-spacing: 0;
+}
+
+.th {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+  padding: 12px;
+  text-align: left;
+  background-color: var(--background); /* Use global background */
+  color: var(--text); /* Use global text color */
+  font-weight: 500;
+}
+
+.td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 12px;
+  color: var(--text); /* Use global text color */
+  transition: background 0.2s ease; /* Smooth hover effect */
+}
+
+.td:hover {
+  background: rgba(0, 0, 0, 0.02); /* Subtle hover feedback */
+}
+
+.fetchButton {
+  padding: 10px 20px;
+  background-color: var(--secondary); /* Use global secondary */
+  color: #fff;
+  border: none;
+  border-radius: 8px; /* SweetAlert2-inspired rounding */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+  font-weight: 500;
+}
+
+.fetchButton:hover:not(:disabled) {
+  background: #16a085; /* Slightly darker secondary */
+  transform: translateY(-1px); /* Subtle lift effect */
+}
+
+.fetchButton:disabled {
+  background-color: #95a5a6; /* Neutral gray for disabled */
+  cursor: not-allowed;
+  opacity: 0.7; /* Visual cue for disabled state */
+}

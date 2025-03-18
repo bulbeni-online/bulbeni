@@ -1,33 +1,53 @@
+/* src/styles/global.css */
+
 :root {
-    --primary: #2c3e50;
-    --secondary: #1abc9c;
-    --danger: #e74c3c;
-    --background: #f4f6f9;
-    --text: #34495e;
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Roboto', sans-serif;
-    background: var(--background);
-    color: var(--text);
-  }
-  
-  .button {
-    padding: 10px 20px;
-    background: var(--secondary);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .button:hover {
-    background: darken(var(--secondary), 10%);
-  }
+  --primary: #2c3e50;
+  --secondary: #1abc9c;
+  --danger: #e74c3c;
+  --background: #f4f6f9;
+  --text: #34495e;
+  --pgheader: #3a0303;
+  --darker-secondary: #0b5244; /* Darker secondary */  
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+.button {
+  padding: 10px 20px;
+  background: var(--secondary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: #16a085; /* Manual darken approximation since darken() isn't native CSS */
+}
+
+/* New pageHeader style */
+.pageHeader {
+  font-size: 24px;
+  font-weight: 1000;
+  color: var(--pgheader); /* Use primary for headers */
+  margin: 10px 0 30px 0; /* Consistent spacing */
+  padding: 10px 20px;
+  text-align: center; /* Centered like SweetAlert2 titles */
+  border-bottom: 2px solid rgba(44, 62, 80, 0.1); /* Subtle underline with primary tint */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.pageHeader:hover {
+  color: #1f2e3d; /* Slightly darker primary for subtle hover effect */
+}
