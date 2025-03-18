@@ -370,11 +370,12 @@ const ProductPage = () => {
               <div className={styles.formGroup}>
                 <label className={styles.label}>URL:</label>
                 <textarea
-                  value={editUrl}
-                  readOnly
+                  value={editUrl}                  
                   className={styles.urlTextarea}
                   rows="3"
                   wrap="soft"
+                  onChange={(e) => setEditUrl(e.target.value)}
+                  required
                 />
               </div>
 

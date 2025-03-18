@@ -71,7 +71,7 @@ const DashboardPage = () => {
             Kaydedilmiş Fiyat Bilgisi Sayısı: <span className={styles.statValue}>{priceCount}</span>
           </p>
           <div className={styles.tableContainer}>
-            <h3 className={styles.tableHeader}>Tüm URL'ler</h3>
+            <h3 className={styles.tableHeader}>Tüm Ürünler</h3>
             <table className={styles.table}>
               <thead>
                 <tr>
